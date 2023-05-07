@@ -1,4 +1,25 @@
 
+
+# ide, local dev
 .idea
 .venv
 
+
+# logs
+worldgpt/server/persistence/log/*.log
+
+
+# snakeoils
+worldgpt/server/persistence/certificate/client.crt.pem
+worldgpt/server/persistence/certificate/client.key.pem
+worldgpt/server/persistence/certificate/server.crt.pem
+worldgpt/server/persistence/certificate/server.key.pem
+
+
+# configuration
+worldgpt/server/persistence/configuration/configuration.json
+
+
+# datastore
+worldgpt/server/persistence/database/datastore.db
+worldgpt/server/persistence/voice/*.mp3
