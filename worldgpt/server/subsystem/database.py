@@ -10,6 +10,8 @@ from worldgpt.shared.model.character import Character
 
 class Database(Subsystem, metaclass=Singleton):
 
+    # todo requires cleanup from hacktime
+
     def __init__(self):
         super().__init__()
         self.characters = {}
