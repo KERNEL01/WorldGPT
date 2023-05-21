@@ -1,4 +1,10 @@
+
+
+from worldgpt.server.util.logger import init_logging
 from worldgpt.shared.util.subsystem import Subsystem
+from worldgpt.server.subsystem.configuration import Configuration
+from worldgpt.server.subsystem.database import Database
+from worldgpt.server.subsystem.api import run_in_main_thread
 
 
 def bootstrap_subsystems():
@@ -14,11 +20,11 @@ def shutdown_subsystems():
 
 
 def main():
-    #init_logging()
+    init_logging()
     bootstrap_subsystems()
     try:
         while True:
-            pass # todo APISubsystem.run_in_main_thread()
+            run_in_main_thread()
     except KeyboardInterrupt:
         shutdown_subsystems()
 
