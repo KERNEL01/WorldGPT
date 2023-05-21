@@ -1,6 +1,7 @@
 
 
 import json
+from datetime import datetime
 from typing import Optional, Literal, List
 from pydantic import BaseModel, Field
 from worldgpt.shared.model.message import Message
@@ -94,3 +95,42 @@ class Character(BaseModel):
                        json.dumps(self.summaries),
                        json.dumps([x.dict() for x in self.meta])
                        ]
+
+    def to_prompt_messages(self):
+        """ Convert character information into Message objects that can be used as prompts for the LM. """
+        prompts = []
+        messages = []
+        prompts.append(f"Your name is {self.name}")
+        prompts.append(f"You can be described as: {self.description}")
+        prompts.append(f"You are {self.gender}")
+        if self.alignment:
+            prompts.append(f"Your alignment is {self.alignment}")
+        # todo health to prompt
+        prompts.append(f"You have {self.health} health")
+        if self.mood:
+            prompts.append(f"You are feeling {self.mood}")
+        if self.rank:
+            prompts.append(f"You are the rank of {self.rank}")
+        if self.title:
+            prompts.append(f"You title is {self.title}")
+        if self.occupation:
+            prompts.append(f"You work as a {self.occupation}")
+        if self.age:
+            age = datetime.fromtimestamp(self.age)
+            repr_age = f"{age.year} years, and {age.month} months"
+            prompts.append(f"You are {repr_age} old")
+        if self.birthdate:
+            bd = datetime.fromtimestamp(self.birthdate)
+            repr_bd = f"{bd.month}, {bd.day}"
+            prompts.append(f"Your birthday is {repr_bd}")
+        if self.attributes:
+            prompts.append(f"you have the following attributes: {', '.join(self.attributes)}")
+        if self.inventory:
+            prompts.append(f"You have the following items: {', '.join(self.inventory)}")
+
+        for prompt in prompts:
+            messages.append(Message(role="system", content=prompt))
+        for message in self.messages:
+            messages.append(messages)
+        # todo decide if we're checking for prompt size here, or we're doing it further in the process.
+        return messages
