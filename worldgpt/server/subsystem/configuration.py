@@ -1,11 +1,10 @@
 
+
 import json
 import logging
 import os
 from typing import Union
-
 from pydantic import DirectoryPath, FilePath, IPvAnyAddress, conint
-
 from worldgpt.server.model.configuration import ServerConfiguration
 from worldgpt.shared.util import about
 from worldgpt.shared.util.singleton import Singleton
@@ -38,7 +37,9 @@ class Configuration(Subsystem, metaclass=Singleton):
         `load_configuration` is called to read in the config and inherit the data to the Subsystem.
         set the active flag to indicate we are ready from processing and start the worker to process from the queue.
         """
-        if not os.path.exists(self.find_configuration_path()):
+        if not self.find_configuration_path():
+            self.first_run()
+        elif not os.path.exists(self.find_configuration_path()):
             self.first_run()
         self.load_configuration()
         self.active = True
@@ -95,6 +96,8 @@ class Configuration(Subsystem, metaclass=Singleton):
                 self.configuration = os.path.join('worldgpt', 'server',
                                                   'persistence', 'configuration',
                                                   'configuration.json')
+        else:
+            return None
         return self.configuration
 
     def load_configuration(self):
