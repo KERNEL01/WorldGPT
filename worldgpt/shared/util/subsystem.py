@@ -15,8 +15,7 @@ import logging
 import queue
 import threading
 from typing import Union
-
-from immersive.shared.util.rwlock import RWLock
+from worldgpt.shared.util.rwlock import RWLock
 
 
 class Subsystem:
@@ -45,6 +44,7 @@ class Subsystem:
                 3. set the active flag to True
                 4  call the worker's `start` method.
         """
+        logging.info(f'bootstrapping {self.__name__} Subsystem')
         self.active = True
         self.worker.start()
 
