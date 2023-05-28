@@ -106,7 +106,8 @@ class Character(BaseModel):
         if self.alignment:
             prompts.append(f"Your alignment is {self.alignment}")
         # todo health to prompt
-        prompts.append(f"You have {self.health} health")
+        if self.health:
+            prompts.append(f"You have {self.health} health")
         if self.mood:
             prompts.append(f"You are feeling {self.mood}")
         if self.rank:
@@ -133,4 +134,5 @@ class Character(BaseModel):
         for message in self.messages:
             messages.append(messages)
         # todo decide if we're checking for prompt size here, or we're doing it further in the process.
+        # todo wearing clothing instead of having it as an item.
         return messages
