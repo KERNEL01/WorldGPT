@@ -3,7 +3,6 @@
 import json
 import logging
 import os
-from typing import Union
 from pydantic import DirectoryPath, FilePath, IPvAnyAddress, conint
 from worldgpt.server.model.configuration import ServerConfiguration
 from worldgpt.shared.util import about
