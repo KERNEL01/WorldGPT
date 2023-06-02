@@ -1,11 +1,11 @@
 
 
-import os
-from pydantic import BaseModel, DirectoryPath, FilePath
+from pydantic import BaseModel
+from pydantic.types import Path
 
 
 class Configuration(BaseModel):
-    persistence_base: DirectoryPath
-    client_certificate: FilePath
-    client_key: FilePath
-    datastore: FilePath
+    persistence_base: Path
+    client_certificate: Path
+    client_key: Path
+    datastore: Path
