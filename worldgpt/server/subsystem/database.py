@@ -32,7 +32,7 @@ class Database(Subsystem, metaclass=Singleton):
         self.worker.start()
 
     def first_run(self):
-        query = Character.to_sql_schema()
+        query = Character.sql_schema()
         with sqlite3.connect(self.get_datastore()) as connection:
             self.execute_query(query)
 
