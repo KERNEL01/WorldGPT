@@ -59,7 +59,7 @@ class Character(BaseModel):
 
     @staticmethod
     def sql_schema():
-        return f""""CREATE TABLE IF NOT EXISTS Character(
+        return f"""CREATE TABLE IF NOT EXISTS Character(
                     name varchar primary key not null,
                     description varchar not null,
                     rank varchar,
@@ -73,7 +73,8 @@ class Character(BaseModel):
                     health float,
                     inventory varchar,
                     messages varchar not null,
-                    summaries varchar not null
+                    summaries varchar not null,
+                    meta varchar not null
                 );"""
 
     def to_sql(self):
