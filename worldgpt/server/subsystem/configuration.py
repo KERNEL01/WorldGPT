@@ -55,10 +55,10 @@ class Configuration(Subsystem, metaclass=Singleton):
         """
         # todo create the files that will be missing.
         configuration = ServerConfiguration()
+
         with open(self.find_configuration_path(), 'w') as conffd:
-            conffd.write("{}")
-        configuration.configuration = self.find_configuration_path()
-        self.write_configuration(configuration)
+            conffd.write(configuration.json())
+        self.inherit_data(configuration)
 
     def inherit_data(self, model: ServerConfiguration):
         """ Combine the values from the ServerConfiguration with the Subsystem instance."""
@@ -91,13 +91,11 @@ class Configuration(Subsystem, metaclass=Singleton):
             with self.lock.w_locked():
                 self.configuration = os.environ[f"{about.__TITLE__}_CONFPATH"]
             return os.environ[f"{about.__TITLE__}_CONFPATH"]
-        elif os.path.exists(os.path.join('worldgpt', 'server', 'persistence', 'configuration', 'configuration.json')):
+        else:
             with self.lock.w_locked():
                 self.configuration = os.path.join('worldgpt', 'server',
-                                                  'persistence', 'configuration',
-                                                  'configuration.json')
-        else:
-            return None
+                                                  'persistence', 'configuration', 'configuration.json')
+
         return self.configuration
 
     def load_configuration(self):
