@@ -22,5 +22,5 @@ class ServerConfiguration(Configuration):
     api_listen_host: str | IPvAnyAddress = "localhost"
     api_listen_port: conint(gt=0, le=65535) = 8001
 
-    elevenlabs_api_key: str
-    openai_api_key: str
+    elevenlabs_api_key: str = ""
+    openai_api_key: str = ""
