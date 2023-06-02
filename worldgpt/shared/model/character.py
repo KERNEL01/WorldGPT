@@ -133,6 +133,4 @@ class Character(BaseModel):
             messages.append(Message(role="system", content=prompt))
         for message in self.messages:
             messages.append(messages)
-        # todo decide if we're checking for prompt size here, or we're doing it further in the process.
-        # todo wearing clothing instead of having it as an item.
         return messages
