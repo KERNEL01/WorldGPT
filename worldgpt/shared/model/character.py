@@ -1,6 +1,7 @@
 
 
 import json
+import logging
 from datetime import datetime
 from typing import Optional, Literal, List
 from pydantic import BaseModel, Field
@@ -68,6 +69,7 @@ class Character(BaseModel):
                     age float,
                     birthdate float,
                     gender varchar not null,
+                    alignment,
                     mood varchar,
                     attributes varchar,
                     health float,
@@ -101,7 +103,7 @@ class Character(BaseModel):
         """ Convert character information into Message objects that can be used as prompts for the LM. """
         prompts = []
         messages = []
-        prompts.append(f"Your name is {self.name}")
+        prompts.append(f"Your name is {self.name}, please only generate content as this character.")
         prompts.append(f"You can be described as: {self.description}")
         prompts.append(f"You are {self.gender}")
         if self.alignment:
@@ -121,10 +123,14 @@ class Character(BaseModel):
             age = datetime.fromtimestamp(self.age)
             repr_age = f"{age.year} years, and {age.month} months"
             prompts.append(f"You are {repr_age} old")
-        if self.birthdate:
-            bd = datetime.fromtimestamp(self.birthdate)
-            repr_bd = f"{bd.month}, {bd.day}"
-            prompts.append(f"Your birthday is {repr_bd}")
+        # todo fix issues with windows and timestamps older than 1970
+        try:
+            if self.birthdate:
+                bd = datetime.fromtimestamp(self.birthdate)
+                repr_bd = f"{bd.month}, {bd.day}"
+                prompts.append(f"Your birthday is {repr_bd}")
+        except Exception as e:
+            logging.error(f"Error converting birthdate to datetime: {e}")
         if self.attributes:
             prompts.append(f"you have the following attributes: {', '.join(self.attributes)}")
         if self.inventory:
