@@ -9,8 +9,8 @@ from worldgpt.server.subsystem.api import run_in_main_thread
 
 def bootstrap_subsystems():
     """ Instantiates and Bootstraps all subsystems."""
-    for subcls in Subsystem.__subclasses__():
-        subcls().bootstrap()
+    Configuration().bootstrap()
+    Database().bootstrap()
 
 
 def shutdown_subsystems():
