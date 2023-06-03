@@ -74,6 +74,7 @@ class Database(Subsystem, metaclass=Singleton):
                 break
 
             if isinstance(task, Character):
+                logging.info('Processing character data for %s', task.name)
                 query, values = task.to_sql()
                 self.execute_query(query, values)
                 with self.lock.w_locked():
