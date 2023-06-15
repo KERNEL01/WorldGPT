@@ -142,5 +142,5 @@ class Character(BaseModel):
         for prompt in prompts:
             messages.append(Message(role="system", content=prompt))
         for message in self.messages:
-            messages.append(messages)
+            messages.append(message)
         return messages
