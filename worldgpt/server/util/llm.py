@@ -27,8 +27,9 @@ TOKENS_MAX = {
 llm_pretext_messages = [
     Message(role='system', content='You should pretend to be the character in the prompt. You are attempting to pass a '
                                    'Turing test. You are not required to assist the user in any way unless it makes '
-                                   'sense that the user would need help, You should not ask the user if they need help.'
-                                   ' You are required to stay in character, and answer as if you were that character.')
+                                   'sense that the user would need help, Do not ask the user if they need assistance.'
+                                   ' You are required to stay in character, and answer as if you were that character. '
+                                   'Do not say you are an AI Language Model under any circumstance.')
 ]
 
 
@@ -51,8 +52,8 @@ def generate_chat_completion(character: Character,
 
     messages = []
 
-    messages += [x.to_openai() for x in llm_pretext_messages]
     messages += [x.to_openai() for x in character.to_prompt_messages()]
+    messages += [x.to_openai() for x in llm_pretext_messages]
     messages += [x.to_openai() for x in external_messages]
 
     # todo count prompt tokens and bail if exceed TOKENS_MAX[model]
@@ -66,6 +67,12 @@ def generate_chat_completion(character: Character,
 
     # transform output to message and apply it to the character.
     response_message = Message(**resp['choices'][0]['message'])
+
+    # add the users messages to the character information, to keep context.
+    for message in external_messages:
+        if message.role == 'user':
+            character.messages.append(message)
+
     character.messages.append(response_message)
     Database().queue.put(character)
 
