@@ -17,6 +17,7 @@ import os
 from typing import Literal, List
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from worldgpt.shared.model.character import Character
 from worldgpt.shared.model.message import Message
@@ -24,6 +25,21 @@ from worldgpt.shared.util import about
 
 
 application = FastAPI()
+
+
+origins = [
+    'http://localhost:8001',
+    'http://localhost:63342'
+           ]
+
+
+application.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @application.get("/")
