@@ -123,8 +123,9 @@ class Character(BaseModel):
         if self.occupation:
             prompts.append(f"You work as a {self.occupation}")
         if self.age:
-            age = datetime.fromtimestamp(self.age)
-            repr_age = f"{age.year} years, and {age.month} months"
+            decimal = self.age % 1
+            month = int(decimal * 12)
+            repr_age = f"{int(self.age)} years, and {int(month)} months"
             prompts.append(f"You are {repr_age} old")
         # todo fix issues with windows and timestamps older than 1970
         try:
